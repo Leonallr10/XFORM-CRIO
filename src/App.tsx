@@ -40,6 +40,7 @@ function App() {
   };
 
   const validateForm = (): boolean => {
+    // Check if any field is empty
     if (!formData.username.trim()) {
       alert('Please fill out the Username field.');
       return false;
@@ -57,23 +58,26 @@ function App() {
       return false;
     }
 
+    // Validate email (must contain @)
     if (!formData.email.includes('@')) {
-      alert('Invalid email');
+      alert('Invalid email. Please check your email address.');
       return false;
     }
 
+    // Validate phone number (must be exactly 10 digits)
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(formData.phone)) {
-      alert('Invalid phone number');
+      alert('Invalid phone number. Please enter a 10-digit phone number.');
       return false;
     }
 
+    // Validate date of birth (cannot be in the future)
     const selectedDate = new Date(formData.dob);
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
+    today.setHours(0, 0, 0, 0); // Reset time to compare only dates
+    
     if (selectedDate > today) {
-      alert('Invalid date of birth');
+      alert('Invalid date of birth. Date of birth cannot be in the future.');
       return false;
     }
 
@@ -82,17 +86,20 @@ function App() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (validateForm()) {
+      // Form is valid, close modal and reset
       closeModal();
     }
   };
 
   const handleBackdropClick = (e: React.MouseEvent) => {
-    if ((e.target as HTMLElement).classList.contains('modal')) {
+    if (e.target === e.currentTarget) {
       closeModal();
     }
   };
 
+  // Handle escape key press
   useEffect(() => {
     const handleEscapeKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isModalOpen) {
@@ -112,10 +119,12 @@ function App() {
   }, [isModalOpen]);
 
   return (
-    <div id="root" className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center p-4">
       <div className="text-center">
-        <h1 className="text-4xl font-bold text-slate-800 mb-12">User Details Modal</h1>
-
+        <h1 className="text-4xl font-bold text-slate-800 mb-12">
+          User Details Modal
+        </h1>
+        
         <button
           onClick={openModal}
           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-lg shadow-lg transform transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-blue-300"
@@ -126,14 +135,16 @@ function App() {
 
       {/* Modal */}
       {isModalOpen && (
-        <div
+        <div 
           className="modal fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fadeIn"
           onClick={handleBackdropClick}
         >
           <div className="modal-content bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all duration-300 animate-slideIn">
             <div className="p-8">
-              <h2 className="text-2xl font-bold text-slate-800 text-center mb-8">Fill Details</h2>
-
+              <h2 className="text-2xl font-bold text-slate-800 text-center mb-8">
+                Fill Details
+              </h2>
+              
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
                   <label htmlFor="username" className="block text-sm font-semibold text-slate-700 mb-2">
