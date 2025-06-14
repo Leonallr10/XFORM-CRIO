@@ -40,7 +40,36 @@ function App() {
   };
 
   const validateForm = (): boolean => {
-    // Check if any field is empty
+    // First check for specific field validations if the field has content
+    
+    // Validate email if it has content
+    if (formData.email.trim() && !formData.email.includes('@')) {
+      alert('Invalid email. Please check your email address.');
+      return false;
+    }
+
+    // Validate phone number if it has content
+    if (formData.phone.trim()) {
+      const phoneRegex = /^\d{10}$/;
+      if (!phoneRegex.test(formData.phone)) {
+        alert('Invalid phone number. Please enter a 10-digit phone number.');
+        return false;
+      }
+    }
+
+    // Validate date of birth if it has content
+    if (formData.dob.trim()) {
+      const selectedDate = new Date(formData.dob);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Reset time to compare only dates
+      
+      if (selectedDate > today) {
+        alert('Invalid date of birth. Date of birth cannot be in the future.');
+        return false;
+      }
+    }
+
+    // Then check for empty fields
     if (!formData.username.trim()) {
       alert('Please fill out the Username field.');
       return false;
@@ -55,29 +84,6 @@ function App() {
     }
     if (!formData.dob.trim()) {
       alert('Please fill out the Date of Birth field.');
-      return false;
-    }
-
-    // Validate email (must contain @)
-    if (!formData.email.includes('@')) {
-      alert('Invalid email. Please check your email address.');
-      return false;
-    }
-
-    // Validate phone number (must be exactly 10 digits)
-    const phoneRegex = /^\d{10}$/;
-    if (!phoneRegex.test(formData.phone)) {
-      alert('Invalid phone number. Please enter a 10-digit phone number.');
-      return false;
-    }
-
-    // Validate date of birth (cannot be in the future)
-    const selectedDate = new Date(formData.dob);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0); // Reset time to compare only dates
-    
-    if (selectedDate > today) {
-      alert('Invalid date of birth. Date of birth cannot be in the future.');
       return false;
     }
 
