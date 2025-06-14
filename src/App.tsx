@@ -58,13 +58,13 @@ function App() {
     }
 
     if (!formData.email.includes('@')) {
-      alert('Invalid email. Please check your email address.');
+      alert('Invalid email');
       return false;
     }
 
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(formData.phone)) {
-      alert('Invalid phone number. Please enter a 10-digit phone number.');
+      alert('Invalid phone number');
       return false;
     }
 
@@ -73,7 +73,7 @@ function App() {
     today.setHours(0, 0, 0, 0);
 
     if (selectedDate > today) {
-      alert('Invalid date of birth. Date cannot be in the future.');
+      alert('Invalid date of birth');
       return false;
     }
 
